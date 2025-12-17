@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0f0f0f;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: white;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            top: 0px;
+            position: sticky;
+            background-color: #0f0f0f;
+            padding: 10px 20px;
+            z-index: 1000;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .menu {
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .menu:hover {
+            background-color: #272727;
+        }
+
+        .youtubelogo {
+            margin-left: 20px;
+            width: 120px;
+            height: 40px;
+            cursor: pointer;
+            content: url("/Public/images/Youtube/Screenshot\ 2025-10-28\ at\ 7.20.08\ PM.png");}
+
+        .search-container {
+            display: flex;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 600px;
+            flex: 1;
+        }
+
+        .search-input {
+            height: 40px;
+            padding: 0 20px;
+            outline: none;
+            border: 1px solid #303030;
+            background-color: #121212;
+            color: white;
+            width: 100%;
+            border-radius: 40px 0 0 40px;
+            font-size: 16px;
+        }
+
+        .search-input:focus {
+            border-color: #1c62b9;
+        }
+
+        .search-button {
+            height: 40px;
+            border-radius: 0 40px 40px 0;
+            background-color: #222222;
+            border: 1px solid #303030;
+            color: white;
+            width: 64px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .search-button:hover {
+            background-color: #3d3d3d;
+        }
+
+        .micborder {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 12px;
+            background-color: #181818;
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .micborder:hover {
+            background-color: #3d3d3d;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-left: 20px;
+        }
+
+        .create {
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            height: 36px;
+            background-color: transparent;
+            border: 1px solid #303030;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .create:hover {
+            background-color: #272727;
+        }
+
+        .notifi {
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .notifi:hover {
+            background-color: #272727;
+        }
+
+        .img-logo {
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            background-image: url(/Public/images/Youtube/megan.png);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 60px;
+            width: 240px;
+            height: calc(100vh - 60px);
+            padding: 12px ;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #717171 transparent;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: #717171;
+            border-radius: 4px;
+        }
+
+        .shortcut-links a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 14px;
+            color: white;
+            padding: 10px 24px;
+            transition: background-color 0.2s;
+        }
+
+        .shortcut-links a span {
+            font-size: 24px;
+            margin-right: 24px;
+        }
+
+        .shortcut-links a:hover {
+            background-color: #272727;
+        }
+
+        .shortcut-links img {
+            border-radius: 50%;
+            height: 24px;
+            width: 24px;
+            margin-right: 24px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #3f3f3f;
+            margin: 12px 0;
+        }
+
+        .p-tag {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        main {
+            margin-left: 260px;
+            margin-top: 24px;
+            padding: 0 20px 40px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 100fr));
+            gap: 40px 16px;
+        }
+
+        .video-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .video-card:hover {
+            transform: scale(1.02);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background-color: #181818;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-thumbnail iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+
+        .video-info {
+            display: flex;
+            margin-top: 12px;
+            gap: 12px;
+        }
+
+        .channel-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            
+            object-fit: cover;
+        }
+
+        
+
+        .video-title {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-bottom: 4px;
+            overflow: hidden;
+        }
+
+        .video-metadata {
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .channel-name {
+            margin-bottom: 2px;
+        }
+
+        .views-date {
+            display: flex;
+            gap: 4px;
+        }
+
+        
+        
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="menu">
+            <span class="bi bi-list"></span>
+        </div>
+        <div class="youtubelogo"></div>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search">
+            <button class="search-button"><span class="bi bi-search"></span></button>
+        </div>
+        
+        <button class="micborder"><span class="bi bi-mic"></span></button>
+        
+        <div class="nav-right">
+            <button class="create">
+                <span class="bi bi-plus-lg"></span>
+                Create
+            </button>
+            <div class="notifi">
+                <span class="bi bi-bell"></span>
+            </div>
+            <div class="img-logo"><img src="/Public/images/Youtube/" alt=""></div>
+        </div>
+    </nav>
+
+    <div class="sidebar">
+        <div class="shortcut-links">
+            <a href=""><span class="bi bi-house-door-fill"></span>Home</a>
+            <a href=""><span class="bi bi-play-circle"></span>Shorts</a>
+            <a href=""><span class="bi bi-collection-play-fill"></span>Subscriptions</a>
+        </div>
+        
+        <hr>
+        
+        <div class="shortcut-links">
+            <p class="p-tag">You <span class="bi bi-chevron-right"></span></p>
+            <a href=""><span class="bi bi-clock-history"></span>History</a>
+            <a href=""><span class="bi bi-list-ul"></span>Playlists</a>
+            <a href=""><span class="bi bi-play-btn-fill"></span>Your videos</a>
+            <a href=""><span class="bi bi-mortarboard-fill"></span>Your courses</a>
+            <a href=""><span class="bi bi-clock"></span>Watch Later</a>
+            <a href=""><span class="bi bi-hand-thumbs-up-fill"></span>Liked videos</a>
+            <a href=""><span class="bi bi-camera-reels-fill"></span>Your clips</a>
+        </div>
+        
+        <hr>
+        
+        <div class="shortcut-links">
+            <p class="p-tag">Subscriptions <span class="bi bi-chevron-right"></span></p>
+            <a href=""><img src="/Public/images/Youtube/channels4_profile.jpg" width='24' height='24'><circle cx='12' cy='12' r='12' fill='%23ff0000'/></svg> Mafia Beatz</a>
+            <a href=""><img src="/Public/images/Youtube/Jack.png"/></svg> Hello World</a>
+            <a href=""><img src="/Public/images/Youtube/megan.png" width='24' height='24'><circle cx='12' cy='12' r='12' fill='%230000ff'/></svg>Michel</a>
+            <a href=""><img src="/Public/images/Youtube/simon.png" width='24' height='24'><circle cx='12' cy='12' r='12' fill='%23ff00ff'/></svg>Mortal</a>
+        </div>
+    </div>
+
+    <main>
+        <div class="video-grid">
+            
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/XoEWh7Za9C8?si=IMoHO1EapM90jDCB" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Amazing Travel Destinations You Must Visit</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Travel Explorer</div>
+                            <div class="views-date">
+                                <span>1.2M views</span>
+                                <span>•</span>
+                                <span>2 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/ie4oGI85SAE?si=OYQh0D19-HAxQeDF" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Complete Web Development Tutorial for Beginners</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Code Academy</div>
+                            <div class="views-date">
+                                <span>850K views</span>
+                                <span>•</span>
+                                <span>1 week ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/-qXHZkckpLk?si=ZtMdQFrMfjiwrGdk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">10 Mind-Blowing Science Facts You Won't Believe</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Science Hub</div>
+                            <div class="views-date">
+                                <span>2.3M views</span>
+                                <span>•</span>
+                                <span>3 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/gs8qfL9PNac?si=4ijFT7lc7lhgj39q" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Best Cooking Recipes for Quick Dinner Ideas</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Chef's Kitchen</div>
+                            <div class="views-date">
+                                <span>500K views</span>
+                                <span>•</span>
+                                <span>5 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/Uvy9kyTc-VU?si=JeL57CW10jqq9nVt" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Epic Gaming Moments and Funny Fails Compilation</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Gaming Pro</div>
+                            <div class="views-date">
+                                <span>3.5M views</span>
+                                <span>•</span>
+                                <span>1 day ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/QdBZY2fkU-0?si=8radsA5R2Ac-31So" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Relaxing Music for Study and Focus - 2 Hours</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Chill Beats</div>
+                            <div class="views-date">
+                                <span>1.8M views</span>
+                                <span>•</span>
+                                <span>2 weeks ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/MIvPZr9NCKQ?si=WwZr_T48SBktqLBe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1564939558297-fc396f18e5c7?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Fitness Workout Routine for Building Muscle</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Fit Life</div>
+                            <div class="views-date">
+                                <span>920K views</span>
+                                <span>•</span>
+                                <span>4 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/g5XHXSOmONk?si=Yc8dOAFuIom6wnkV" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Photography Tips for Stunning Landscape Shots</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Photo Pro</div>
+                            <div class="views-date">
+                                <span>650K views</span>
+                                <span>•</span>
+                                <span>6 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/IyxSqeFrlp0?si=cCVrPD2x1wzp54RP" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Tech Review: Best Smartphones of 2024</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Tech Insider</div>
+                            <div class="views-date">
+                                <span>1.5M views</span>
+                                <span>•</span>
+                                <span>1 week ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/6HaA2LTSViQ?si=zSX5N8qEl1nccFVU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1509281373149-e957c6296406?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">DIY Home Decor Ideas on a Budget</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Creative Home</div>
+                            <div class="views-date">
+                                <span>780K views</span>
+                                <span>•</span>
+                                <span>3 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/IrlhevXatXw?si=DlYhP_apk0MGjyp8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Amazing Wildlife Documentary in 4K</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Nature World</div>
+                            <div class="views-date">
+                                <span>2.1M views</span>
+                                <span>•</span>
+                                <span>2 weeks ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/zMaayE3B3Bs?si=OnmfX0QyuAxWEtit" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Comedy Sketch: Office Life Parody</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Laugh Factory</div>
+                            <div class="views-date">
+                                <span>1.3M views</span>
+                                <span>•</span>
+                                <span>5 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/465iEeNOEBg?si=LA0geXP3AU5bsWRB" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Car Review: Electric Vehicles Comparison</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Auto Expert</div>
+                            <div class="views-date">
+                                <span>950K views</span>
+                                <span>•</span>
+                                <span>1 week ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <iframe src="https://www.youtube.com/embed/YvvH0khzRfs?si=ITYS5dEzUKMUtWeI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop" class="channel-icon" alt="">
+                    <div class="video-details">
+                        <div class="video-title">Fashion Trends 2024: Style Guide</div>
+                        <div class="video-metadata">
+                            <div class="channel-name">Style Icon</div>
+                            <div class="views-date">
+                                <span>720K views</span>
+                                <span>•</span>
+                                <span>4 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
